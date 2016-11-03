@@ -15,10 +15,6 @@ app.disable('x-powered-by');
 
 for (const i of foldersArr) {
   const folder = foldersArr[i];
-  const files = fs.readdirSync(`./assets/${folder}`);
-
-  files.sort(semver.compare);
-  files.reverse();
 
   folders[folder] = {
     contentType: mime.lookup(folder),

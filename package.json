@@ -1,0 +1,28 @@
+{
+  "name": "smallcdn",
+  "version": "0.1.0",
+  "description": "The most advanced CDN.",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint ."
+  },
+  "author": "Hackzzila",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SmallCDN/SmallCDN.git"
+  },
+  "dependencies": {
+    "compression": "^1.6.2",
+    "express": "^4.14.0",
+    "mime": "^1.3.4",
+    "semver": "^5.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.9.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^2.0.1",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.5.0"
+  }
+}

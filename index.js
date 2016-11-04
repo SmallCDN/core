@@ -1,5 +1,5 @@
 const fs = require('fs');
-const config = require('./config');
+const config = require('./config.json');
 const restify = require('restify');
 const Router = require('./Router');
 

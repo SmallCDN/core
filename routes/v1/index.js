@@ -1,21 +1,8 @@
-const fs = require('fs');
-const mime = require('mime');
-const semver = require('semver');
-const Router = require('../Router');
+const Router = require('../../Router');
 
 const router = new Router();
 
-const libraryMapping = require('../libraryMapping.json');
-
-const folders = {};
-const foldersArr = fs.readdirSync('./assets-v1');
-
-for (const folder of foldersArr) {
-  folders[folder] = {
-    contentType: mime.lookup(folder),
-    files: fs.readdirSync(`assets-v1/${folder}`).sort(semver.compare).reverse(),
-  };
-}
+const libraryMapping = require('../../libraryMapping.json');
 
 router.get('/ping', (req, res) => {
   res.status(204);

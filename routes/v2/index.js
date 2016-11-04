@@ -1,9 +1,11 @@
 const semver = require('semver');
-const Router = require('../Router');
+const Router = require('../../Router');
+
+const libraries = require('../../loadAssets')('v2');
 
 const router = new Router();
 
-const libraries = require('../loadAssets')();
+router.use('/api', require('./api')(libraries));
 
 router.get('/ping', (req, res) => {
   res.status(204);
@@ -28,7 +30,7 @@ router.get('/:library', (req, res) => {
   if (!file) return res.send(404, { code: 4, message: `the library '${req.params.library}' has a configuration issue, please report this to the library owner` });
 
   res.header('X-Version', version);
-  return res.sendFile(`assets/${req.params.library}/${version}/${file}`);
+  return res.sendFile(2, req.params.library, version, file);
 });
 
 router.get('/:library/:file', (req, res) => {
@@ -44,7 +46,7 @@ router.get('/:library/:file', (req, res) => {
   if (!library.files[version].includes(req.params.file)) return res.send(404, { code: 5, message: `the file '${res.params.file}' does not exist` });
 
   res.header('X-Version', version);
-  return res.sendFile(`assets/${req.params.library}/${version}/${req.params.file}`);
+  return res.sendFile(2, req.params.library, version, req.params.file);
 });
 
 module.exports = router;

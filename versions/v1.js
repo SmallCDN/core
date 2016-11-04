@@ -25,17 +25,18 @@ router.get('/ping-no-cache', (req, res) => {
   res.end();
 });
 
-router.get('/:folder', (req, res) => {
+router.get('/:folder', (req, res, next) => {
   if (!folders[req.params.folder]) return res.send(404, { code: 1, message: `library '${req.params.folder}' not found` });
 
   const folder = folders[req.params.folder];
 
   res.header('X-Version', folder.files[0]);
   res.header('Content-Type', folder.contentType);
-  return res.sendFile(`assets-v1/${req.params.folder}/${folder.files[0]}`);
+  // return res.sendFile(`assets-v1/${req.params.folder}/${folder.files[0]}`);
+  return res.redirect(301, `/v2/${req.params.folder}`, next);
 });
 
-router.get('/:folder/:version', (req, res) => {
+router.get('/:folder/:version', (req, res, next) => {
   if (!folders[req.params.folder]) return res.send(404, { code: 1, message: `library '${req.params.folder}' not found` });
 
   if (!semver.validRange(req.params.version)) return res.send(400, { code: 3, message: `'${req.params.version}' is not a valid version` });
@@ -47,7 +48,8 @@ router.get('/:folder/:version', (req, res) => {
 
   res.header('X-Version', version);
   res.header('Content-Type', folder.contentType);
-  return res.sendFile(`assets-v1/${req.params.folder}/${version}`);
+  // return res.sendFile(`assets-v1/${req.params.folder}/${version}`);
+  return res.redirect(301, `/v2/${req.params.folder}/${req.params.version}`, next);
 });
 
 module.exports = router;

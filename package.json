@@ -7,6 +7,9 @@
     "test": "eslint ."
   },
   "author": "Hackzzila",
+  "contributors": [
+    "Gus Caplan <me@gus.host">
+  ]
   "license": "MIT",
   "repository": {
     "type": "git",

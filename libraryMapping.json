@@ -1,0 +1,9 @@
+{
+  "jquery.js": "jquery",
+  "jquery-ui.js": "jquery-ui",
+  "jquery-mobile.js": "jquery-mobile",
+  "bootstrap.js": "bootstrap/bootstrap.min.js",
+  "bootstrap.css": "bootstrap/bootstrap.min.css",
+  "highlight.js": "highlight.js/highlight.min.js",
+  "highlight.css": "highlight.js/highlight.min.css"
+}

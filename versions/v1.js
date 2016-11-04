@@ -5,6 +5,8 @@ const Router = require('../Router');
 
 const router = new Router();
 
+const libraryMapping = require('../libraryMapping.json');
+
 const folders = {};
 const foldersArr = fs.readdirSync('./assets-v1');
 
@@ -26,30 +28,15 @@ router.get('/ping-no-cache', (req, res) => {
 });
 
 router.get('/:folder', (req, res, next) => {
-  if (!folders[req.params.folder]) return res.send(404, { code: 1, message: `library '${req.params.folder}' not found` });
-
-  const folder = folders[req.params.folder];
-
-  res.header('X-Version', folder.files[0]);
-  res.header('Content-Type', folder.contentType);
-  // return res.sendFile(`assets-v1/${req.params.folder}/${folder.files[0]}`);
-  return res.redirect(301, `/v2/${req.params.folder}`, next);
+  let folder = req.params.folder;
+  if (folder in libraryMapping) folder = libraryMapping[folder];
+  return res.redirect(302, `/v2/${folder}`, next);
 });
 
 router.get('/:folder/:version', (req, res, next) => {
-  if (!folders[req.params.folder]) return res.send(404, { code: 1, message: `library '${req.params.folder}' not found` });
-
-  if (!semver.validRange(req.params.version)) return res.send(400, { code: 3, message: `'${req.params.version}' is not a valid version` });
-
-  const folder = folders[req.params.folder];
-  const version = folder.files.find(e => semver.satisfies(e, req.params.version));
-
-  if (version === undefined) return res.send(404, { code: 2, message: `version '${req.params.version}' not found` });
-
-  res.header('X-Version', version);
-  res.header('Content-Type', folder.contentType);
-  // return res.sendFile(`assets-v1/${req.params.folder}/${version}`);
-  return res.redirect(301, `/v2/${req.params.folder}/${req.params.version}`, next);
+  let folder = req.params.folder;
+  if (folder in libraryMapping) folder = libraryMapping[folder];
+  return res.redirect(302, `/v2/${folder}?v=${req.params.version}`, next);
 });
 
 module.exports = router;

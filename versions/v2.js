@@ -38,14 +38,8 @@ router.get('/ping-no-cache', (req, res) => {
 });
 
 router.get('/:library', (req, res) => {
-  if (!libraries[req.params.library]) {
-    res.status(404);
-    return res.send({ code: 1, message: `library '${req.params.library}' not found` });
-  }
-  if (req.query.v && !semver.validRange(req.query.v)) {
-    res.status(400);
-    return res.send({ code: 3, message: `'${req.query.v}' is not a valid version.` });
-  }
+  if (!libraries[req.params.library]) return res.send(404, { code: 1, message: `library '${req.params.library}' not found` });
+  if (req.query.v && !semver.validRange(req.query.v)) return res.send(404, { code: 3, message: `'${req.query.v}' is not a valid version.` });
 
   const library = libraries[req.params.library];
   const version = req.query.v
@@ -53,10 +47,7 @@ router.get('/:library', (req, res) => {
     : library.versions[0];
   const file = library.mainfiles.find(e => library.files[version].indexOf(e) > -1);
 
-  if (!file) {
-    res.status(404);
-    return res.send({ code: 4, message: `the library '${req.params.library}' has a configuration issue, please report this to the library owner` });
-  }
+  if (!file) return res.send(404, { code: 4, message: `the library '${req.params.library}' has a configuration issue, please report this to the library owner` });
 
   res.header('X-Version', version);
   fs.readFile(`assets-v2/${req.params.library}/${version}/${file}`, 'utf8', (err, data) => {
@@ -66,24 +57,20 @@ router.get('/:library', (req, res) => {
 });
 
 router.get('/:library/:file', (req, res) => {
-  if (!libraries[req.params.library]) {
-    res.status(404);
-    return res.send({ code: 1, message: `library '${req.params.library}' not found` });
-  }
-  if (req.query.v && !semver.validRange(req.query.v)) {
-    res.status(400);
-    return res.send({ code: 3, message: `'${req.query.v}' is not a valid version.` });
-  }
+  if (!libraries[req.params.library]) return res.send(404, { code: 1, message: `library '${req.params.library}' not found` });
+
+  if (req.query.v && !semver.validRange(req.query.v)) return res.send(400, { code: 3, message: `'${req.query.v}' is not a valid version.` });
+
   const library = libraries[req.params.library];
   const version = req.query.v
     ? library.versions.find(e => semver.satisfies(e, req.query.v))
     : library.versions[0];
 
-  if (!library.files[version].includes(req.params.file)) return res.status(404).send({ code: 5, message: `the file '${res.params.file}' does not exist` });
+  if (!library.files[version].includes(req.params.file)) return res.send(404, { code: 5, message: `the file '${res.params.file}' does not exist` });
 
   res.header('X-Version', version);
   fs.readFile(`assets-v2/${req.params.library}/${version}/${req.params.file}`, 'utf8', (err, data) => {
-    res.send(data);
+    res.send(200, data);
   });
   return undefined;
 });

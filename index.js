@@ -1,19 +1,22 @@
-const fs = require('fs');
-const express = require('express');
-const compression = require('compression');
+const restify = require('restify');
 const config = require('./config');
+const Router = require('restify-routing');
 
-const app = express();
+const router = new Router();
 
-app.use(compression());
-app.disable('x-powered-by');
+const server = restify.createServer({
+  name: 'SmallCDN',
+});
 
-app.get('/', (req, res) => {
+server.use(restify.gzipResponse());
+
+server.get('/', (req, res) => {
   res.redirect(301, 'https://smallcdn.rocks');
 });
 
-for (const folder of fs.readdirSync('./versions').reverse()) {
-  require(`./versions/${folder}`)(app);
-}
+router.use('/v2', require('./versions/v2'));
+router.use('/', require('./versions/v1'));
 
-app.listen(config.port);
+router.applyRoutes(server);
+
+server.listen(config.port);

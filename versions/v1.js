@@ -1,7 +1,7 @@
 const fs = require('fs');
 const mime = require('mime');
 const semver = require('semver');
-const Router = require('restify-routing');
+const Router = require('../Router');
 
 const router = new Router();
 

@@ -25,7 +25,7 @@ router.get('/:library', (req, res) => {
     : library.versions[0];
   const file = library.mainfiles.find(e => library.files[version].indexOf(e) > -1);
 
-  if (!file) return res.send(404, { code: 4, message: `the library '${req.params.library}' has a configuration issue, please report this to the library owner` });
+  if (!file) return res.send(500, { code: 4, message: `the library '${req.params.library}' has a configuration issue, please report this to the library owner` });
 
   res.header('X-Version', version);
   return res.sendFile(2, req.params.library, version, file);

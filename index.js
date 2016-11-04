@@ -14,7 +14,7 @@ server.use(restify.gzipResponse());
 server.use((req, res, next) => {
   res.sendFile = (v, library, version, file) => { // eslint-disable-line
     fs.readFile(`assets/v${v}/${library}/${version}/${file}`, 'utf8', (err, data) => {
-      if (err) return res.send(500, { code: 6, message: "there was an error reading from disk" });
+      if (err) return res.send(500, { code: 6, message: "there was an error reading from diskg" });
       return res.end(data);
     });
   };

@@ -5,8 +5,6 @@ const libraries = require('../../loadAssets')('v2');
 
 const router = new Router();
 
-router.use('/api', require('./api')(libraries));
-
 router.get('/ping', (req, res) => {
   res.status(204);
   res.end();

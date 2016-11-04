@@ -2,7 +2,7 @@ const Router = require('../../Router');
 
 const router = new Router();
 
-const libraryMapping = require('../../libraryMapping.json');
+const libraryMapping = require('../../assets/mapping.json');
 
 router.get('/ping', (req, res) => {
   res.status(204);

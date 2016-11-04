@@ -1,7 +1,7 @@
 const fs = require('fs');
 const config = require('./config');
 const restify = require('restify');
-const Router = require('restify-routing');
+const Router = require('../restify-routing/index');
 
 const router = new Router();
 

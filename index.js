@@ -24,10 +24,12 @@ function main() {
     return next();
   });
 
-  router.use('/', require('./routes')); // this one is always first
-  router.use('/gh', require('./routes/github'));
+  const v2 = require('./routes/v2');
 
-  router.use('/v2', require('./routes/v2')); // then the other versions in decending order
+  router.use('/', require('./routes')); // this one is always first
+  router.use('/gh', require('./routes/github')(v2));
+
+  router.use('/v2', v2.router); // then the other versions in decending order
   router.use('/', require('./routes/v1')); // default version gets mounted at root
 
   router.applyRoutes(server);

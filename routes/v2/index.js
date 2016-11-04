@@ -1,7 +1,7 @@
 const semver = require('semver');
 const Router = require('../../Router');
 
-const libraries = require('../../loadAssets')('v2');
+let libraries = require('../../loadAssets')('v2');
 
 const router = new Router();
 
@@ -47,4 +47,8 @@ router.get('/:library/:file', (req, res) => {
   return res.sendFile(2, req.params.library, version, req.params.file);
 });
 
-module.exports = router;
+const init = () => {
+  libraries = require('../../loadAssets')('v2');
+}
+
+module.exports = { router, init };

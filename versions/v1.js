@@ -32,10 +32,7 @@ router.get('/:folder', (req, res) => {
 
   res.header('X-Version', folder.files[0]);
   res.header('Content-Type', folder.contentType);
-  fs.readFile(`${__dirname}/../assets/${req.params.folder}/${folder.files[0]}`, 'utf8', (err, file) => {
-    res.send(200, file);
-  });
-  return undefined;
+  return res.sendFile(`${__dirname}/../assets/${req.params.folder}/${folder.files[0]}`);
 });
 
 router.get('/:folder/:version', (req, res) => {
@@ -50,10 +47,7 @@ router.get('/:folder/:version', (req, res) => {
 
   res.header('X-Version', version);
   res.header('Content-Type', folder.contentType);
-  fs.readFile(`${__dirname}/../assets/${req.params.folder}/${version}`, 'utf8', (err, file) => {
-    res.send(200, file);
-  });
-  return undefined;
+  return res.sendFile(`${__dirname}/../assets/${req.params.folder}/${version}`);
 });
 
 module.exports = router;

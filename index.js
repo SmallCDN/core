@@ -1,9 +1,10 @@
 const fs = require('fs');
-const config = require('./config.json');
 const restify = require('restify');
 const Router = require('./Router');
 
 function main() {
+  require('dotenv').config();
+
   const router = new Router();
 
   const server = restify.createServer({
@@ -11,6 +12,7 @@ function main() {
   });
 
   server.use(restify.gzipResponse());
+  server.use(restify.bodyParser({ mapParams: false }));
 
   server.use((req, res, next) => {
     res.sendFile = (v, library, version, file) => { // eslint-disable-line
@@ -30,14 +32,14 @@ function main() {
 
   router.applyRoutes(server);
 
-  server.listen(config.port, () => {
+  server.listen(process.env.PORT, () => {
     console.log(server.name, server.address().family, `${server.address().address}:${server.address().port}`); // eslint-disable-line
   });
 }
 
 fs.readdir('./libraries', (err) => {
   if (err) {
-    require('simple-git')('./').clone('https://github.com/SmallCDN/libraries.git', './libraries', {}, (error) => {
+    require('simple-git')('./').clone(process.env.LIBRARY_GITHUB_REPO, './libraries', {}, (error) => {
       if (error) throw error;
       main();
     });

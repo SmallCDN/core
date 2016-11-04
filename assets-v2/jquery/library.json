@@ -1,0 +1,12 @@
+{
+  "name": "jQuery",
+  "mainfiles": ["jquery.min.js"],
+  "version": "3.1.1",
+  "description": "JavaScript library for DOM operations",
+  "homepage": "https://jquery.com/",
+  "keywords": [
+    "jquery"
+  ],
+  "license": "MIT",
+  "author": "jQuery Foundation and other contributors"
+}

@@ -1,0 +1,10 @@
+{
+  "name": "AngularJS",
+  "mainfiles": ["angular.min.js"],
+  "version": "1.5.8",
+  "description": "HTML enhanced for web apps",
+  "homepage": "http://daneden.me/animate",
+  "keywords": [],
+  "license": "MIT",
+  "author": "Google"
+}

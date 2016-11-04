@@ -8,6 +8,9 @@
     "node": true
   },
   "rules": {
-    "import/no-unresolved": 0
+    "import/no-unresolved": 0,
+    "import/no-dynamic-require": 0,
+    "global-require": 0,
+    "no-continue": 0,
   }
 }

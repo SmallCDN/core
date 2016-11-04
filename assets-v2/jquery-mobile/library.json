@@ -1,0 +1,10 @@
+{
+  "name": "jQuery Mobile",
+  "mainfiles": ["jquery-mobile.min.js"],
+  "version": "1.4.5",
+  "description": "Touch-Optimized Web Framework for Smartphones & Tablets",
+  "homepage": "https://jquerymobile.com/",
+  "keywords": [],
+  "license": "MIT",
+  "author": "jQuery Foundation and other contributors"
+}

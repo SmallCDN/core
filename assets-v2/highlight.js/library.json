@@ -1,0 +1,13 @@
+{
+  "name": "highlight.js",
+  "mainfiles": ["highlight.min.js"],
+  "version": "9.8.0",
+  "description": "Syntax highlighting with language autodetection.",
+  "homepage": "https://highlightjs.org/",
+  "keywords": [
+    "highlight",
+    "syntax"
+  ],
+  "license": "BSD-3-Clause",
+  "author": "Ivan Sagalaev"
+}

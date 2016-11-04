@@ -6,12 +6,12 @@ const Router = require('restify-routing');
 const router = new Router();
 
 const folders = {};
-const foldersArr = fs.readdirSync('./assets');
+const foldersArr = fs.readdirSync('./assets-v1');
 
 for (const folder of foldersArr) {
   folders[folder] = {
     contentType: mime.lookup(folder),
-    files: fs.readdirSync(`./assets/${folder}`).sort(semver.compare).reverse(),
+    files: fs.readdirSync(`assets-v1/${folder}`).sort(semver.compare).reverse(),
   };
 }
 
@@ -32,7 +32,7 @@ router.get('/:folder', (req, res) => {
 
   res.header('X-Version', folder.files[0]);
   res.header('Content-Type', folder.contentType);
-  return res.sendFile(`${__dirname}/../assets/${req.params.folder}/${folder.files[0]}`);
+  return res.sendFile(`assets-v1/${req.params.folder}/${folder.files[0]}`);
 });
 
 router.get('/:folder/:version', (req, res) => {
@@ -47,7 +47,7 @@ router.get('/:folder/:version', (req, res) => {
 
   res.header('X-Version', version);
   res.header('Content-Type', folder.contentType);
-  return res.sendFile(`${__dirname}/../assets/${req.params.folder}/${version}`);
+  return res.sendFile(`assets-v1/${req.params.folder}/${version}`);
 });
 
 module.exports = router;

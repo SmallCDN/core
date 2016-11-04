@@ -14,14 +14,15 @@ server.use(restify.gzipResponse());
 server.use((req, res, next) => {
   res.sendFile = (path, status = 200, encoding = 'utf8') => { // eslint-disable-line
     fs.readFile(path, encoding, (err, data) => {
-      res.send(status, data);
+      if (err) return res.send(500, { code: 500, message: err.message });
+      return res.end(data);
     });
   };
   return next();
 });
 
-server.get('/', (req, res) => {
-  res.redirect(301, 'https://smallcdn.rocks');
+server.get('/', (req, res, next) => {
+  res.redirect(301, 'https://smallcdn.rocks', next);
 });
 
 router.use('/v2', require('./versions/v2'));

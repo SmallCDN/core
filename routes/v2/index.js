@@ -47,8 +47,9 @@ router.get('/:library/:file', (req, res) => {
   return res.sendFile(2, req.params.library, version, req.params.file);
 });
 
-const init = () => {
-  libraries = require('../../loadAssets')('v2');
-}
-
-module.exports = { router, init };
+module.exports = {
+  router,
+  init: () => {
+    libraries = require('../../loadAssets')('v2');
+  },
+};

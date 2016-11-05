@@ -2,7 +2,7 @@
   "name": "smallcdn",
   "version": "2.0.0-beta",
   "description": "The most advanced CDN.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "eslint ."
   },

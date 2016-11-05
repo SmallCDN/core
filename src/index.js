@@ -2,9 +2,9 @@ const fs = require('fs');
 const restify = require('restify');
 const Router = require('./Router');
 
-function main() {
-  require('dotenv').config();
+require('dotenv').config();
 
+function main() {
   const router = new Router();
 
   const server = restify.createServer({

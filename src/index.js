@@ -2,7 +2,7 @@ const fs = require('fs');
 const restify = require('restify');
 const Router = require('./Router');
 
-require('dotenv').config();
+require('dotenv').config({ path: './src/.env' });
 
 function main() {
   const router = new Router();

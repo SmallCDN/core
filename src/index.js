@@ -4,7 +4,9 @@ const Router = require('./Router');
 
 require('dotenv').config({ path: './src/.env' });
 
-function main() {
+function main(error) {
+  if (error) throw error;
+
   const router = new Router();
 
   const server = restify.createServer({
@@ -41,14 +43,8 @@ function main() {
 
 fs.readdir('./libraries', (err) => {
   if (err) {
-    require('simple-git')('./').clone(process.env.LIBRARY_GITHUB_REPO, './libraries', {}, (error) => {
-      if (error) throw error;
-      main();
-    });
+    require('simple-git')('./').clone(process.env.LIBRARY_GITHUB_REPO, './libraries', {}, main);
   } else {
-    require('simple-git')('./libraries').pull((error) => {
-      if (error) throw error;
-      main();
-    });
+    require('simple-git')('./libraries').pull(main);
   }
 });

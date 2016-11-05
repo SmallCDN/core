@@ -9,7 +9,8 @@ module.exports = (v) => {
     const index = versions.indexOf('library.json');
 
     if (index < 0) continue;
-    versions.splice(index, 1).sort(semver.compare).reverse();
+    versions.splice(index, 1).sort(semver.compare);
+    versions.reverse();
 
     const files = {};
     for (const version of versions) {

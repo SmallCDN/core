@@ -16,6 +16,7 @@ router.get('/ping-no-cache', (req, res) => {
 });
 
 router.get('/:library', (req, res) => {
+  if (req.query.apiv === '1') res.header('Warning', 'API v1 is depriciated');
   if (!libraries[req.params.library]) return res.send(404, { code: 1, message: `library '${req.params.library}' not found` });
   if (req.query.v && !semver.validRange(req.query.v)) return res.send(404, { code: 3, message: `'${req.query.v}' is not a valid version.` });
 
@@ -32,6 +33,7 @@ router.get('/:library', (req, res) => {
 });
 
 router.get('/:library/:file', (req, res) => {
+  if (req.query.apiv === '1') res.header('Warning', 'API v1 is depriciated');
   if (!libraries[req.params.library]) return res.send(404, { code: 1, message: `library '${req.params.library}' not found` });
 
   if (req.query.v && !semver.validRange(req.query.v)) return res.send(400, { code: 3, message: `'${req.query.v}' is not a valid version.` });

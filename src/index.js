@@ -15,6 +15,7 @@ function main(error) {
 
   server.use(restify.gzipResponse());
   server.use(restify.bodyParser({ mapParams: false }));
+  server.use(restify.queryParser());
 
   server.use((req, res, next) => {
     res.sendFile = (v, library, version, file) => { // eslint-disable-line

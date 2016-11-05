@@ -18,8 +18,8 @@ function main(error) {
   server.use(restify.queryParser());
 
   server.use((req, res, next) => {
-    res.sendFile = (v, library, version, file) => { // eslint-disable-line
-      fs.readFile(`libraries/v${v}/${library}/${version}/${file}`, 'utf8', (err, data) => {
+    res.sendFile = (library, version, file) => { // eslint-disable-line
+      fs.readFile(`libraries/libs/${library}/${version}/${file}`, 'utf8', (err, data) => {
         if (err) return res.send(500, { code: 6, message: 'there was an error reading from cache' });
         return res.end(data);
       });
@@ -32,8 +32,7 @@ function main(error) {
   router.use('/', require('./routes')); // this one is always first
   router.use('/gh', require('./routes/github')(v2));
 
-  router.use('/v2', v2.router); // then the other versions in decending order
-  router.use('/', require('./routes/v1')); // default version gets mounted at root
+  router.use('/', v2.router); // default version gets mounted at root
 
   router.applyRoutes(server);
 

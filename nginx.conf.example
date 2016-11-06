@@ -13,15 +13,15 @@ server {
     return 200;
   }
 
-  location ~ \/(?<library>.+)$ {
-    proxy_set_header X-Library-Name $library;
-    proxy_set_header X-Library-File "";
-    proxy_pass http://localhost:3000;
-  }
-
   location ~ \/(?<library>.+)\/(?<file>.+)$ {
     proxy_set_header X-Library-Name $library;
     proxy_set_header X-Library-File $file;
+    proxy_pass http://localhost:3000;
+  }
+
+  location ~ \/(?<library>.+)$ {
+    proxy_set_header X-Library-Name $library;
+    proxy_set_header X-Library-File "";
     proxy_pass http://localhost:3000;
   }
 }

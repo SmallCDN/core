@@ -14,6 +14,7 @@ router.get('/libraries/:library', (req, res) => {
 router.get('/search/:query', (req, res) => {
   const data = [];
   for (const key of Object.keys(libraries).filter(e => e.includes(req.params.query))) {
+    libraries[key].name = key;
     data.push(libraries[key]);
   }
   return res.send(200, data);

@@ -38,7 +38,7 @@ const server = http.createServer((req, res) => {
   } else {
     if (!library.files[version]) return resError(res, 404, { code: 8, message: `no versions match ${version}` });
     file = library.info.mainfiles.find(e => library.files[version].indexOf(e) > -1);
-    if (!file) return res.send(500, { code: 4, message: `the library '${req.params.library}' has a configuration issue, please report this to the library owner` });
+    if (!file) return resError(res, 500, { code: 4, message: `the library '${library}' has a configuration issue, please report this to the library owner` });
   }
 
   res.header('X-Version', version);

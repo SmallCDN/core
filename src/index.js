@@ -52,7 +52,7 @@ function main(error) {
 
   server.use((req, res, next) => {
     res.sendFile = (library, version, file) => { // eslint-disable-line
-      if (libraries[library].info.dependencies && req.query['no-deps'] === undefined) {
+      if (libraries[library].info.dependencies && req.query.deps !== undefined) {
         fs.readFile(`libraries/libs/${library}/${version}/${file}`, 'utf8', (err, data) => {
           if (err) return res.send(500, { code: 6, message: 'there was an error reading from cache' });
           res.header('Content-Type', mime.lookup(file));

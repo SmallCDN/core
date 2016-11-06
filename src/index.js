@@ -12,7 +12,7 @@ function run(err) {
   let libraries = require('./util/loadAssets')();
 
   const server = http.createServer((req, res) => {
-    if (req.headers['X-Update-Libraries'] === 'yus') {
+    if (req.headers['x-update-libraries'] !== undefined) {
       libraries = require('./util/loadAssets')();
       return undefined;
     }
@@ -41,8 +41,8 @@ function run(err) {
 
     res.setHeader('X-Version', version);
 
-    return fs.readFile(`libraries/libs/${library.name}/${version}/${file}`, 'utf8', (err, data) => {
-      if (err) return resError(res, 500, { code: 6, message: 'there was an error reading from cache' });
+    return fs.readFile(`libraries/libs/${library.name}/${version}/${file}`, 'utf8', (error, data) => {
+      if (error) return resError(res, 500, { code: 6, message: 'there was an error reading from cache' });
       res.writeHead(200, 'Content-Type', mime.lookup(file));
       if (library.info.dependencies && params.deps !== undefined) {
         res.write(getDependencies(res, libraries, library, file).concat(`\n\n${data}`).trim());

@@ -24,7 +24,7 @@ router.get('/:library', (req, res) => {
   const version = req.query.v
     ? library.versions.find(e => semver.satisfies(e, req.query.v))
     : library.versions[0];
-  const file = library.mainfiles.find(e => library.files[version].indexOf(e) > -1);
+  const file = library.info.mainfiles.find(e => library.files[version].indexOf(e) > -1);
 
   if (!file) return res.send(500, { code: 4, message: `the library '${req.params.library}' has a configuration issue, please report this to the library owner` });
 

@@ -31,6 +31,7 @@ function main(error) {
 
   router.use('/', require('./routes')); // this one is always first
   router.use('/gh', require('./routes/github')(v2));
+  router.use('/api', require('./routes/api'));
 
   router.use('/', v2.router); // default version gets mounted at root
 

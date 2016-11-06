@@ -3,6 +3,7 @@ server {
   listen [::]:80;
 
   server_name sml.lc;
+  gzip on;
 
   location / {
     return 301 https://smallcdn.rocks;

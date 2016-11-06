@@ -1,4 +1,4 @@
-const Router = require('../../util/Router');
+const Router = require('superhero').Router;
 
 const router = new Router();
 

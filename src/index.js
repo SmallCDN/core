@@ -1,35 +1,28 @@
 const fs = require('fs');
-const restify = require('restify');
-const Router = require('./util/Router');
+const Superhero = require('superhero');
 require('dotenv').config({ path: './src/.env' });
 
-let libraries = require('./util/loadAssets')();
+const Router = Superhero.Router;
 
 function main(error) {
   if (error) throw error;
 
   const router = new Router();
 
-  const server = restify.createServer({
+  const server = new Superhero({
     name: 'SmallCDN',
+    cdn: true,
   });
 
-  server.use(restify.gzipResponse());
-  server.use(restify.bodyParser({ mapParams: false }));
-  server.use(restify.queryParser());
-
-  server.use((req, res, next) => {
-    res.sendFile = (...args) => require('./util/sendFile')(req, res, libraries, ...args); // eslint-disable-line
-    return next();
-  });
+  // server.use(restify.gzipResponse());
+  // server.use(restify.bodyParser({ mapParams: false }));
+  // server.use(restify.queryParser());
 
   const v2 = require('./routes/v2');
   const api = require('./routes/api');
 
   router.use('/', require('./routes')); // this one is always first
-  router.use('/gh', require('./routes/github')(v2, api, () => {
-    libraries = require('./loadAssets')();
-  }));
+  router.use('/gh', require('./routes/github')(v2, api));
   router.use('/api', api.router);
 
   router.use('/', v2.router); // default version gets mounted at root
@@ -37,7 +30,7 @@ function main(error) {
   router.applyRoutes(server);
 
   server.listen(process.env.PORT, () => {
-    console.log(server.name, server.address().family, `${server.address().address}:${server.address().port}`); // eslint-disable-line
+    console.log(server.name, 'on port', server.port); // eslint-disable-line
   });
 }
 

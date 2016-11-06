@@ -1,11 +1,9 @@
 const fs = require('fs');
-const mime = require('mime');
 const restify = require('restify');
-const Router = require('./Router');
+const Router = require('./util/Router');
 require('dotenv').config({ path: './src/.env' });
-const getDependencies = require('./getDependencies');
 
-let libraries = require('./loadAssets.js')();
+let libraries = require('./util/loadAssets')();
 
 function main(error) {
   if (error) throw error;
@@ -21,16 +19,7 @@ function main(error) {
   server.use(restify.queryParser());
 
   server.use((req, res, next) => {
-    res.sendFile = (library, version, file) => { // eslint-disable-line
-      fs.readFile(`libraries/libs/${library}/${version}/${file}`, 'utf8', (err, data) => {
-        if (err) return res.send(500, { code: 6, message: 'there was an error reading from cache' });
-        res.header('Content-Type', mime.lookup(file));
-        if (libraries[library].info.dependencies && req.query.deps !== undefined) {
-          return res.end(getDependencies(req, res, libraries, libraries[library], file).concat(`\n${data}`));
-        }
-        return res.end(data);
-      });
-    };
+    res.sendFile = (...args) => require('./util/sendFile')(req, res, libraries, ...args); // eslint-disable-line
     return next();
   });
 

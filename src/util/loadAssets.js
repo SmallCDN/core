@@ -4,8 +4,8 @@ const semver = require('semver');
 module.exports = () => {
   const libraries = {};
 
-  for (const folder of fs.readdirSync('./libraries/libs')) {
-    const versions = fs.readdirSync(`./libraries/libs/${folder}`);
+  for (const folder of fs.readdirSync('libraries/libs')) {
+    const versions = fs.readdirSync(`libraries/libs/${folder}`);
     const index = versions.indexOf('library.json');
 
     if (index < 0) continue;
@@ -15,14 +15,14 @@ module.exports = () => {
     const files = {};
     for (const version of versions) {
       if (version.toLowerCase() === 'library.json') continue;
-      files[version] = fs.readdirSync(`./libraries/libs/${folder}/${version}`);
+      files[version] = fs.readdirSync(`libraries/libs/${folder}/${version}`);
     }
 
     libraries[folder] = {
       files,
       name: folder,
       latestVersion: Object.keys(files)[0],
-      info: JSON.parse(fs.readFileSync(`./libraries/libs/${folder}/library.json`)),
+      info: JSON.parse(fs.readFileSync(`libraries/libs/${folder}/library.json`)),
     };
   }
 

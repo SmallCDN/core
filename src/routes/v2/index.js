@@ -1,7 +1,7 @@
 const semver = require('semver');
-const Router = require('../../Router');
+const Router = require('../../util/Router');
 
-let libraries = require('../../loadAssets')();
+let libraries = require('../../util/loadAssets')();
 
 const router = new Router();
 

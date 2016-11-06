@@ -1,8 +1,8 @@
-const Router = require('../../Router');
+const Router = require('../../util/Router');
 
 const router = new Router();
 
-let libraries = require('../../loadAssets')();
+let libraries = require('../../util/loadAssets')();
 
 router.get('/libraries', (req, res) => res.send(200, libraries));
 

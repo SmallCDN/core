@@ -11,7 +11,6 @@ function main(error) {
 
   const server = new Superhero({
     name: 'SmallCDN',
-    cdn: true,
   });
 
   // server.use(restify.gzipResponse());

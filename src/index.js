@@ -43,7 +43,6 @@ const server = http.createServer((req, res) => {
     if (err) return resError(res, 500, { code: 6, message: 'there was an error reading from cache' });
     res.writeHead(200, 'Content-Type', mime.lookup(file));
     if (library.info.dependencies && params.deps !== undefined) {
-      console.log(1);
       res.write(getDependencies(res, libraries, library, file).concat(`\n\n${data}`).trim());
     } else {
       res.write(data);

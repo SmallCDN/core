@@ -28,10 +28,11 @@ function main(error) {
   });
 
   const v2 = require('./routes/v2');
+  const api = require('./routes/api');
 
   router.use('/', require('./routes')); // this one is always first
-  router.use('/gh', require('./routes/github')(v2));
-  router.use('/api', require('./routes/api'));
+  router.use('/gh', require('./routes/github')(v2, api));
+  router.use('/api', api.router);
 
   router.use('/', v2.router); // default version gets mounted at root
 

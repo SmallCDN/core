@@ -19,8 +19,8 @@ module.exports = () => {
     }
 
     libraries[folder] = {
-      versions,
       files,
+      latestVersion: Object.keys(files)[0],
       info: JSON.parse(fs.readFileSync(`./libraries/libs/${folder}/library.json`)),
     };
   }

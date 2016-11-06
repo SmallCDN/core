@@ -3,7 +3,7 @@ const Router = require('../../Router');
 
 const router = new Router();
 
-let init;
+const init = [];
 
 router.post('/', (req, res) => {
   if (!(req.header('X-Hub-Signature') && process.env.LIBRARY_GITHUB_SECRET) && req.header('X-Hub-Signature') !== `sha1=${crypto.createHmac('sha1', 'test').update(JSON.stringify(req.body)).digest('hex')}`) {
@@ -18,13 +18,14 @@ router.post('/', (req, res) => {
 
   require('simple-git')('./libraries').pull((error) => {
     if (error) throw error;
-    init();
+    for (const func of init) func();
   });
   res.status(204);
   return res.end();
 });
 
-module.exports = (v2) => {
-  init = v2.init;
+module.exports = (v2, api) => {
+  init.push(v2.init);
+  init.push(api.init);
   return router;
 };

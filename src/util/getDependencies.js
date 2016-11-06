@@ -24,7 +24,7 @@ module.exports = function getDependencies(req, res, libraries, library, file) {
     if (mime.lookup(depFile) !== mime.lookup(file)) continue;
     try {
       data = data.concat(getDependencies(req, res, libraries, depLibrary, depFile));
-      data = data.concat(`\n${fs.readFileSync(`libraries/libs/${dependency.split('/')[0]}/${depVersion}/${depFile}`, 'utf-8')}`);
+      data = data.concat(`\n\n${fs.readFileSync(`libraries/libs/${dependency.split('/')[0]}/${depVersion}/${depFile}`, 'utf-8')}`);
     } catch (err) {
       return res.send(500, { code: 6, message: 'there was an error reading from cache' });
     }

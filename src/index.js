@@ -43,7 +43,7 @@ function run(err) {
 
     return fs.readFile(`libraries/libs/${library.name}/${version}/${file}`, 'utf8', (error, data) => {
       if (error) return resError(res, 500, { code: 6, message: 'there was an error reading from cache' });
-      res.writeHead(200, 'Content-Type', mime.lookup(file));
+      res.writeHead(200, { 'Content-Type': mime.lookup(file) });
       if (library.info.dependencies && params.deps !== undefined) {
         res.write(getDependencies(res, libraries, library, file).concat(`\n\n${data}`).trim());
       } else {

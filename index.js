@@ -13,8 +13,7 @@ const foldersArr = fs.readdirSync('./assets');
 app.use(compression());
 app.disable('x-powered-by');
 
-for (const i of foldersArr) {
-  const folder = foldersArr[i];
+for (const folder of foldersArr) {
   const files = fs.readdirSync(`./assets/${folder}`);
 
   files.sort(semver.compare);

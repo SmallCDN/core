@@ -24,8 +24,9 @@ router.post('/', (req, res) => {
   return res.end();
 });
 
-module.exports = (v2, api) => {
+module.exports = (v2, api, index) => {
   init.push(v2.init);
   init.push(api.init);
+  init.push(index);
   return router;
 };

@@ -25,6 +25,9 @@ router.get('/:library', (req, res) => {
   const version = req.query.v
     ? Object.keys(library.files).find(e => semver.satisfies(e, req.query.v))
     : library.latestVersion;
+
+  if (!library.files[version]) return res.send(404, { code: 8, message: `no versions match ${req.query.v}` });
+
   const file = library.info.mainfiles.find(e => library.files[version].indexOf(e) > -1);
 
   if (!file) return res.send(500, { code: 4, message: `the library '${req.params.library}' has a configuration issue, please report this to the library owner` });
@@ -44,6 +47,7 @@ router.get('/:library/:file', (req, res) => {
     ? Object.keys(library.files).find(e => semver.satisfies(e, req.query.v))
     : library.latestVersion;
 
+  if (!library.files[version]) return res.send(404, { code: 8, message: `no versions match ${req.query.v}` });
   if (!library.files[version].includes(req.params.file)) return res.send(404, { code: 5, message: `the file '${req.params.file}' does not exist` });
 
   res.header('X-Version', version);

@@ -13,9 +13,11 @@ function main(error) {
     name: 'SmallCDN',
   });
 
-  // server.use(restify.gzipResponse());
-  // server.use(restify.bodyParser({ mapParams: false }));
-  // server.use(restify.queryParser());
+  if (process.env.NODE_ENV === 'development') {
+    server.use((req, res) => {
+      res.header('access-control-allow-origin', '*');
+    });
+  }
 
   const v2 = require('./routes/v2');
   const api = require('./routes/api');

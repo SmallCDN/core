@@ -10,7 +10,7 @@ server {
   }
 
   location ~ \/(ping-no-cache|ping) {
-    return 200;
+    return 200 "pong";
   }
 
   location ^~ /api {

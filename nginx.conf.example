@@ -25,6 +25,8 @@ server {
   }
 
   location ~ \/(?<library>.+)\/(?<file>.+)$ {
+    proxy_ignore_headers "Set-Cookie";
+    proxy_hide_header "Set-Cookie";
     proxy_cache main_cache;
     proxy_cache_use_stale error timeout invalid_header;
     proxy_set_header X-Library-Name $library;
@@ -33,6 +35,8 @@ server {
   }
 
   location ~ \/(?<library>.+)$ {
+    proxy_ignore_headers "Set-Cookie";
+    proxy_hide_header "Set-Cookie";
     proxy_cache main_cache;
     proxy_cache_use_stale error timeout invalid_header;
     proxy_set_header X-Library-Name $library;

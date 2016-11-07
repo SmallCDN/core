@@ -13,6 +13,10 @@ server {
     return 200;
   }
 
+  location ^~ /api {
+    proxy_pass http://localhost:3001;
+  }
+
   location ~ \/(?<library>.+)\/(?<file>.+)$ {
     proxy_set_header X-Library-Name $library;
     proxy_set_header X-Library-File $file;

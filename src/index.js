@@ -11,6 +11,8 @@ function run(err) {
   if (err) throw err;
   let libraries = require('./util/loadAssets')();
 
+  require('child_process').fork('./src/api');
+
   const server = http.createServer((req, res) => {
     if (req.headers['x-update-libraries'] !== undefined) {
       libraries = require('./util/loadAssets')();
@@ -56,7 +58,7 @@ function run(err) {
     });
   });
 
-  server.listen(process.env.PORT, () => console.log('Serving on port', process.env.PORT)); // eslint-disable-line
+  server.listen(process.env.PORT, () => console.log('CDN listening on port', process.env.PORT)); // eslint-disable-line
 }
 
 fs.readdir('./libraries', (err) => {

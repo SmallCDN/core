@@ -41,6 +41,13 @@ function run(err) {
 
     res.setHeader('X-Version', version);
 
+    if (library.versions[version].cache) {
+      const cache = library.versions[version].cache;
+      res.writeHead(200, { 'Content-Type': cache.mime });
+      res.write(cache.file);
+      return res.end();
+    }
+
     return fs.readFile(`libraries/libs/${library.name}/${version}/${file}`, 'utf8', (error, data) => {
       if (error) return resError(res, 500, { code: 6, message: 'there was an error reading from cache' });
       if (library.versions[version].info.dependencies && params.deps !== undefined) {

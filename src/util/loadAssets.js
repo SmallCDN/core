@@ -1,5 +1,6 @@
 const fs = require('fs');
 const semver = require('semver');
+const mime = require('mime');
 
 module.exports = () => {
   const libraries = {};
@@ -21,10 +22,19 @@ module.exports = () => {
       final[version].info = JSON.parse(fs.readFileSync(`libraries/libs/${folder}/${version}/library.json`));
     }
 
+    const cache = {};
+    for (const version of versions) {
+      cache[version] = {};
+      const path = `libraries/libs/${folder}/${version}/${final[version].info.index}`;
+      cache[version].file = fs.readFileSync(path);
+      cache[version].mime = mime.lookup(path);
+    }
+
     libraries[folder] = {
       versions: final,
       name: folder,
       latestVersion: versions[0],
+      cache,
     };
   }
 

@@ -1,5 +1,4 @@
 const restify = require('restify');
-require('dotenv').config({ path: './src/.env' });
 
 const libraries = require('../util/loadAssets')();
 
@@ -26,4 +25,4 @@ server.get('/api/search/:query', (req, res) => {
   return res.send(200, data);
 });
 
-server.listen(process.env.API_PORT, () => console.log(server.name, 'listening on port', server.port));
+server.listen(process.env.API_PORT, () => console.log(server.name, 'listening on port', process.env.API_PORT));

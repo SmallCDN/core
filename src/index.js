@@ -4,7 +4,6 @@ const mime = require('mime');
 const semver = require('semver');
 const url = require('url');
 const getDependencies = require('./util/getDependencies');
-const getModifiedTime = require('./util/getModifiedTime');
 const resError = require('./util/resError');
 require('dotenv').config({ path: './src/.env' });
 
@@ -41,15 +40,6 @@ function run(err) {
     }
 
     res.setHeader('X-Version', version);
-    const lastModified = getModifiedTime(res, libraries, library, file, version);
-    if (res.finished) return undefined;
-
-    if (Date.parse(req.headers['if-modified-since']) >= Date.parse(lastModified)) {
-      res.writeHead(304);
-      return res.end();
-    }
-
-    res.setHeader('Last-Modified', lastModified);
 
     return fs.readFile(`libraries/libs/${library.name}/${version}/${file}`, 'utf8', (error, data) => {
       if (error) return resError(res, 500, { code: 6, message: 'there was an error reading from cache' });

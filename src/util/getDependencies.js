@@ -19,7 +19,7 @@ module.exports = function getDependencies(res, libraries, library, file, version
 
     const depFile = dependency.split('/')[1]
       ? dependency.split('/')[1]
-      : depLibrary.info.mainfiles.find(e => depLibrary.files[depVersion].indexOf(e) > -1);
+      : depLibrary.versions[depVersion].info.index;
 
     if (!depLibrary.versions[depVersion].files.includes(depFile)) return resError(res, 500, { code: 4, message: `the library '${library.name}' has a configuration issue, please report this to the library owner` });
     if (mime.lookup(depFile) !== mime.lookup(file)) continue;

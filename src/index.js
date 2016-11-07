@@ -2,11 +2,10 @@ const fs = require('fs');
 const http = require('http');
 const mime = require('mime');
 const semver = require('semver');
-const crypto = require('crypto');
 const url = require('url');
-const rawbody = require('raw-body');
 const getDependencies = require('./util/getDependencies');
 const resError = require('./util/resError');
+const handleGithub = require('./util/handleGithub');
 require('dotenv').config({ path: './src/.env' });
 
 function run(err) {
@@ -16,22 +15,7 @@ function run(err) {
   require('child_process').fork('./src/api');
 
   const server = http.createServer((req, res) => {
-    if (req.headers['x-update-libraries'] !== undefined && req.method === 'POST') {
-      if (!req.headers['x-hub-signature']) return false;
-      rawbody(req, {
-        length: req.headers['content-length'],
-        encoding: 'utf8',
-        limit: '100kb',
-      }).then((buffer) => {
-        const hmac = crypto.createHmac('sha1', process.env.LIBRARY_GITHUB_SECRET);
-        hmac.update(buffer, 'utf-8');
-        const expected = `sha1=${hmac.digest('hex')}`;
-        if (req.headers['x-hub-signature'] !== expected) return false;
-        libraries = require('./util/loadAssets')();
-        return true;
-      });
-      return false;
-    }
+    handleGithub(req, res, lib => libraries = lib); // eslint-disable-line
 
     let library = req.headers['x-library-name'];
     let file = req.headers['x-library-file'];

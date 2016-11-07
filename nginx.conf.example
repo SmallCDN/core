@@ -1,3 +1,5 @@
+proxy_cache_path /tmp/nginx/cache levels=1:2 keys_zone=main_cache:10m max_size=1g inactive=60m use_temp_path=off;
+
 server {
   listen 80;
   listen [::]:80;
@@ -23,12 +25,14 @@ server {
   }
 
   location ~ \/(?<library>.+)\/(?<file>.+)$ {
+    proxy_cache main_cache;
     proxy_set_header X-Library-Name $library;
     proxy_set_header X-Library-File $file;
     proxy_pass http://localhost:3000;
   }
 
   location ~ \/(?<library>.+)$ {
+    proxy_cache main_cache;
     proxy_set_header X-Library-Name $library;
     proxy_set_header X-Library-File "";
     proxy_pass http://localhost:3000;

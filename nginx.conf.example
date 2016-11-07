@@ -5,8 +5,13 @@ server {
   server_name sml.lc;
   gzip on;
 
-  location / {
+  location = / {
     return 301 https://smallcdn.rocks;
+  }
+
+  location = /github {
+    proxy_set_header X-Update-Libraries "true";
+    proxy_pass http://localhost:3000;
   }
 
   location ~ \/(ping-no-cache|ping) {

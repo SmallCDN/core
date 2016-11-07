@@ -27,16 +27,16 @@ function run(err) {
     library = libraries[library];
 
     const version = params.v
-      ? Object.keys(library.files).find(e => semver.satisfies(e, params.v))
+      ? Object.keys(library.versions).find(e => semver.satisfies(e, params.v))
       : library.latestVersion;
 
+    if (!library.versions[version].files) return resError(res, 404, { code: 8, message: `no versions match ${version}` });
+
     if (file) {
-      if (!library.files[version]) return resError(res, 404, { code: 8, message: `no versions match ${version}` });
-      if (!library.files[version].includes(file)) return resError(res, 404, { code: 5, message: `the file '${file}' does not exist` });
+      if (!library.versions[version].files.includes(file)) return resError(res, 404, { code: 5, message: `the file '${file}' does not exist` });
     } else {
-      if (!library.files[version]) return resError(res, 404, { code: 8, message: `no versions match ${version}` });
-      file = library.info.mainfiles.find(e => library.files[version].indexOf(e) > -1);
-      if (!file) return resError(res, 500, { code: 4, message: `the library '${library}' has a configuration issue, please report this to the library owner` });
+      if (library.versions[version].files.indexOf(library.versions[version].info.index) < 0) return resError(res, 500, { code: 4, message: `the library '${library}' has a configuration issue, please report this to the library owner` });
+      file = library.versions[version].info.index;
     }
 
     res.setHeader('X-Version', version);
@@ -44,8 +44,8 @@ function run(err) {
     return fs.readFile(`libraries/libs/${library.name}/${version}/${file}`, 'utf8', (error, data) => {
       if (error) return resError(res, 500, { code: 6, message: 'there was an error reading from cache' });
       res.writeHead(200, { 'Content-Type': mime.lookup(file) });
-      if (library.info.dependencies && params.deps !== undefined) {
-        res.write(getDependencies(res, libraries, library, file).concat(`\n\n${data}`).trim());
+      if (library.versions[version].info.dependencies && params.deps !== undefined) {
+        res.write(getDependencies(res, libraries, library, file, version).concat(`\n\n${data}`).trim());
       } else {
         res.write(data);
       }

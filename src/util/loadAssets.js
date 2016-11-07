@@ -6,23 +6,25 @@ module.exports = () => {
 
   for (const folder of fs.readdirSync('libraries/libs')) {
     const versions = fs.readdirSync(`libraries/libs/${folder}`);
-    const index = versions.indexOf('library.json');
 
-    if (index < 0) continue;
-    versions.splice(index, 1).sort(semver.compare);
+    versions.sort(semver.compare);
     versions.reverse();
 
-    const files = {};
+    const final = {};
     for (const version of versions) {
-      if (version.toLowerCase() === 'library.json') continue;
-      files[version] = fs.readdirSync(`libraries/libs/${folder}/${version}`);
+      final[version] = {};
+      final[version].files = fs.readdirSync(`libraries/libs/${folder}/${version}`);
+      if (final[version].files.indexOf('library.json') < 0) {
+        delete final[version];
+        continue;
+      }
+      final[version].info = JSON.parse(fs.readFileSync(`libraries/libs/${folder}/${version}/library.json`));
     }
 
     libraries[folder] = {
-      files,
+      versions: final,
       name: folder,
-      latestVersion: Object.keys(files)[0],
-      info: JSON.parse(fs.readFileSync(`libraries/libs/${folder}/library.json`)),
+      latestVersion: versions[0],
     };
   }
 

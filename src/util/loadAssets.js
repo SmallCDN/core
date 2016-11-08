@@ -44,8 +44,6 @@ module.exports = () => {
       versions: final,
       name: folder,
       latestVersion: versions[0],
-      cache,
-      updater,
     };
     caches[folder] = cache;
     updaters[folder] = updater;

@@ -10,12 +10,12 @@ require('dotenv').config({ path: './src/.env' });
 
 function run(err) {
   if (err) throw err;
-  let libraries = require('./util/loadAssets')();
+  let [libraries, caches] = require('./util/loadAssets')();
 
   require('child_process').fork('./src/api');
 
   const server = http.createServer((req, res) => {
-    handleGithub(req, res, lib => libraries = lib); // eslint-disable-line
+    handleGithub(req, res, lib => [libraries, caches] = lib); // eslint-disable-line
 
     let library = req.headers['x-library-name'];
     let file = req.headers['x-library-file'];
@@ -24,6 +24,7 @@ function run(err) {
     if (!libraries[library]) return resError(res, 404, { code: 1, message: `library '${library}' not found` });
     if (params.v && !semver.validRange(params.v)) return resError(res, 404, { code: 3, message: `'${params.v}' is not a valid version.` });
 
+    const cache = caches[library];
     library = libraries[library];
 
     const version = params.v
@@ -41,10 +42,9 @@ function run(err) {
 
     res.setHeader('X-Version', version);
 
-    if (library.versions[version].cache) {
-      const cache = library.versions[version].cache;
-      res.writeHead(200, { 'Content-Type': cache.mime });
-      res.write(cache.file);
+    if (cache[version]) {
+      res.writeHead(200, { 'Content-Type': cache[version].mime });
+      res.write(cache[version].file);
       return res.end();
     }
 

@@ -4,6 +4,8 @@ const mime = require('mime');
 
 module.exports = () => {
   const libraries = {};
+  const caches = {};
+  const updaters = {};
 
   for (const folder of fs.readdirSync('libraries/libs')) {
     const versions = fs.readdirSync(`libraries/libs/${folder}`);
@@ -42,10 +44,10 @@ module.exports = () => {
       versions: final,
       name: folder,
       latestVersion: versions[0],
-      cache,
-      updater,
     };
+    caches[folder] = cache;
+    updaters[folder] = updater;
   }
 
-  return libraries;
+  return [libraries, caches, updaters];
 };

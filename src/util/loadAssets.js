@@ -26,8 +26,16 @@ module.exports = () => {
     for (const version of versions) {
       cache[version] = {};
       const path = `libraries/libs/${folder}/${version}/${final[version].info.index}`;
-      cache[version].file = fs.readFileSync(path);
+      cache[version].file = fs.readFileSync(path, 'utf8');
       cache[version].mime = mime.lookup(path);
+    }
+
+    let updater = {};
+
+    try {
+      updater = JSON.parse(fs.readFileSync(`libraries/libs/${folder}/updater.json`));
+    } catch (err) {
+      updater = {};
     }
 
     libraries[folder] = {
@@ -35,6 +43,7 @@ module.exports = () => {
       name: folder,
       latestVersion: versions[0],
       cache,
+      updater,
     };
   }
 

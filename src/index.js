@@ -10,12 +10,15 @@ require('dotenv').config({ path: './src/.env' });
 
 function run(err) {
   if (err) throw err;
-  let [libraries, caches] = require('./util/loadAssets')();
+  let { libraries, caches } = require('./util/loadAssets')();
 
   require('child_process').fork('./src/api');
 
   const server = http.createServer((req, res) => {
-    handleGithub(req, res, lib => [libraries, caches] = lib); // eslint-disable-line
+    handleGithub(req, res, (lib) => {
+      libraries = lib.libraries;
+      caches = lib.caches;
+    });
 
     let library = req.headers['x-library-name'];
     let file = req.headers['x-library-file'];

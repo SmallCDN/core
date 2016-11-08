@@ -1,6 +1,6 @@
 const restify = require('restify');
 
-const [libraries] = require('../util/loadAssets')();
+const { libraries } = require('../util/loadAssets')();
 
 const server = restify.createServer({
   name: 'API',

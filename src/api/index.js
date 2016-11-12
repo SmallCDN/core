@@ -8,7 +8,6 @@ const server = restify.createServer({
 });
 
 server.use(restify.gzipResponse());
-server.use(restify.bodyParser({ mapParams: false }));
 server.use(restify.queryParser());
 
 server.get('/api/libraries', (req, res) => res.send(200, libraries));

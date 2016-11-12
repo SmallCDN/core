@@ -15,7 +15,7 @@ module.exports = function getDependencies(res, libraries, library, file, version
       ? Object
         .keys(depLibrary.versions)
         .find(e => semver.satisfies(e, library.versions[version].info.dependencies[dependency]))
-      : depLibrary.latestVersion;
+      : depLibrary.latestVersion.version;
 
     const depFile = dependency.split('/')[1]
       ? dependency.split('/')[1]

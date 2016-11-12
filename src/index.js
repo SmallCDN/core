@@ -3,16 +3,21 @@ const http = require('http');
 const mime = require('mime');
 const semver = require('semver');
 const url = require('url');
+const childProcess = require('child_process');
 const getDependencies = require('./util/getDependencies');
 const resError = require('./util/resError');
 const handleGithub = require('./util/handleGithub');
 require('dotenv').config({ path: './src/.env' });
 
+function spawnApi() {
+  childProcess.fork('./src/api').on('close', () => setTimeout(spawnApi, 5000));
+}
+
 function run(err) {
   if (err) throw err;
   let { libraries, caches } = require('./util/loadAssets')();
 
-  require('child_process').fork('./src/api');
+  spawnApi();
 
   const server = http.createServer((req, res) => {
     handleGithub(req, res, (lib) => {

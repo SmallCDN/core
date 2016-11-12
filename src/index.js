@@ -37,7 +37,7 @@ function run(err) {
 
     const version = params.v
       ? Object.keys(library.versions).find(e => semver.satisfies(e, params.v))
-      : library.latestVersion;
+      : library.latestVersion.version;
 
     if (!library.versions[version].files) return resError(res, 404, { code: 8, message: `no versions match ${version}` });
 

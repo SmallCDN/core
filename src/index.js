@@ -45,7 +45,7 @@ function run(err) {
 
     res.setHeader('X-Version', version);
 
-    if (cache[version]) {
+    if (file === library.versions[version].info.index && cache[version]) {
       res.writeHead(200, { 'Content-Type': cache[version].mime });
       res.write(cache[version].file);
       return res.end();

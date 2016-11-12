@@ -16,6 +16,7 @@ module.exports = () => {
     const final = {};
     for (const version of versions) {
       final[version] = {};
+      final[version].version = version;
       final[version].files = fs.readdirSync(`libraries/libs/${folder}/${version}`);
       if (final[version].files.indexOf('library.json') < 0) {
         delete final[version];
@@ -43,7 +44,7 @@ module.exports = () => {
     libraries[folder] = {
       versions: final,
       name: folder,
-      latestVersion: versions[0],
+      latestVersion: final[versions[0]],
     };
     caches[folder] = cache;
     updaters[folder] = updater;

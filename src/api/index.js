@@ -1,4 +1,5 @@
 const restify = require('restify');
+const Fuse = require('fuse.js');
 
 const { libraries } = require('../util/loadAssets')();
 
@@ -17,12 +18,6 @@ server.get('/api/libraries/:library', (req, res) => {
   return res.send(200, libraries[req.params.library]);
 });
 
-server.get('/api/search/:query', (req, res) => {
-  const data = [];
-  for (const key of Object.keys(libraries).filter(e => e.includes(req.params.query))) {
-    data.push(libraries[key]);
-  }
-  return res.send(200, data);
-});
+server.get('/api/search/:query', (req, res) => res.send(200, new Fuse(Object.values(libraries), { keys: ['name', 'latestVersion.info.name', 'latestVersion.info.keywords'] }).search(req.params.query)));
 
 server.listen(process.env.API_PORT, () => console.log(server.name, 'listening on port', process.env.API_PORT));

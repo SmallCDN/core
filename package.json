@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "dotenv": "^2.0.0",
+    "fuse.js": "^2.5.0",
     "mime": "^1.3.4",
     "raw-body": "^2.1.7",
     "restify": "^4.2.0",

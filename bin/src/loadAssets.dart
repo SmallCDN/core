@@ -12,11 +12,14 @@ Future<Map<String, Map<String, dynamic>>> loadAssets() async {
 
     List<String> versions = [];
 
-    await folder.list().listen((FileSystemEntity version) async {
+    Stream<FileSystemEntity> folderStream = await folder
+        .list();
+    for (FileSystemEntity version in await folderStream.toList()) {
       if (!await FileSystemEntity.isDirectory(version.path)) return;
-      print(
+      versions.add(
           version.path.replaceFirst(new RegExp(r"libraries\/libs\\\S+\\"), ''));
-      
-    });
+    }
+
+    print(versions);
   });
 }

@@ -3,7 +3,7 @@ version: 2.0.0-beta
 description: The most advanced CDN.
 authors:
   - "Hackzzila <admin@hackzzila.com>"
-  - "Gus Camplan <me@gus.host>"
+  - "Gus Caplan <me@gus.host>"
 dependencies:
   dotenv:
   git:

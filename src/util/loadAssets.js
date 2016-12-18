@@ -9,7 +9,7 @@ module.exports = () => {
 
   for (const folder of fs.readdirSync('libraries/libs')) {
     const versions = fs.readdirSync(`libraries/libs/${folder}`).filter(v => !v.endsWith('.json'));
- 
+
     versions.sort(semver.compare);
     versions.reverse();
 

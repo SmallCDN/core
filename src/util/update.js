@@ -52,11 +52,7 @@ module.exports = async (libraries, updaters) => {
         for (const file in updaters[updater].files) {
           try {
             const r = await superagent.get(`https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${updaters[updater].root}/${updaters[updater].files[file]}`);
-            await new Promise((resolve) => {
-              fs.writeFile(`libraries/libs/${updater}/${version}/${file}`, r.text, () => {
-                resolve();
-              });
-            });
+            await new Promise(resolve => fs.writeFile(`libraries/libs/${updater}/${version}/${file}`, r.text, resolve));
           } catch (e) { continue; }
         }
       });

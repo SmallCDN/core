@@ -1,3 +1,5 @@
+require('dotenv').config({ path: './src/.env' });
+
 const fs = require('fs');
 const http = require('http');
 const mime = require('mime');
@@ -7,15 +9,28 @@ const childProcess = require('child_process');
 const getDependencies = require('./util/getDependencies');
 const resError = require('./util/resError');
 const handleGithub = require('./util/handleGithub');
-require('dotenv').config({ path: './src/.env' });
+const update = require('./util/update');
 
 function spawnApi() {
   childProcess.fork('./src/api').on('close', () => setTimeout(spawnApi, 5000));
 }
 
-function run(err) {
+async function run(err) {
   if (err) throw err;
-  let { libraries, caches } = require('./util/loadAssets')();
+  let { libraries, caches, updaters } = require('./util/loadAssets')();
+
+  await update(libraries, updaters);
+
+  let assets = require('./util/loadAssets')();
+  libraries = assets.libraries;
+  caches = assets.caches;
+
+  setInterval(async () => {
+    await update(libraries, updaters);
+    assets = require('./util/loadAssets')();
+    libraries = assets.libraries;
+    caches = assets.caches;
+  }, 3600);
 
   spawnApi();
 
@@ -81,3 +96,5 @@ fs.readdir('./libraries', (err) => {
     require('simple-git')('./libraries').pull(run);
   }
 });
+
+process.on('unhandledRejection', console.error);

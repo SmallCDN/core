@@ -13,7 +13,7 @@ module.exports = (req, res, callback) => {
       hmac.update(buffer, 'utf-8');
       const expected = `sha1=${hmac.digest('hex')}`;
       if (req.headers['x-hub-signature'] !== expected) return false;
-      callback(require('./util/loadAssets')());
+      callback(require('./loadAssets')());
       res.writeHead(200, {});
       res.end();
       return true;

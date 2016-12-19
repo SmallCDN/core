@@ -35,11 +35,12 @@ async function run(err) {
   spawnApi();
 
   const server = http.createServer((req, res) => {
-    if (req.headers['x-update-libraries'] !== undefined && req.method === 'POST' && req.headers['x-hub-signature']) {
+    if (req.headers['x-update-libraries'] !== undefined && req.method === 'POST' && req.headers['x-hub-signature'] !== undefined) {
       handleGithub(req, res, (lib) => {
         libraries = lib.libraries;
         caches = lib.caches;
       });
+      return undefined;
     }
 
     let library = req.headers['x-library-name'];

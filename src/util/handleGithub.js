@@ -13,9 +13,12 @@ module.exports = (req, res, callback) => {
       hmac.update(buffer, 'utf-8');
       const expected = `sha1=${hmac.digest('hex')}`;
       if (req.headers['x-hub-signature'] !== expected) return false;
-      callback(require('./loadAssets')());
-      res.writeHead(200, {});
-      res.end();
+      require('simple-git')('./libraries').pull((err) => {
+        if (err) return;
+        callback(require('./loadAssets')());
+        res.writeHead(200, {});
+        res.end();
+      });
       return true;
     });
     return true;

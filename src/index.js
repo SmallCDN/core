@@ -35,10 +35,10 @@ async function run(err) {
   spawnApi();
 
   const server = http.createServer((req, res) => {
-    handleGithub(req, res, (lib) => {
+    if (handleGithub(req, res, (lib) => {
       libraries = lib.libraries;
       caches = lib.caches;
-    });
+    })) return undefined;
 
     let library = req.headers['x-library-name'];
     let file = req.headers['x-library-file'];

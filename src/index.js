@@ -30,7 +30,7 @@ async function run(err) {
     assets = require('./util/loadAssets')();
     libraries = assets.libraries;
     caches = assets.caches;
-  }, 3600);
+  }, 3600e3);
 
   spawnApi();
 
